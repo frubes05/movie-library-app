@@ -1,10 +1,68 @@
-import { Card, CardContent } from "@mui/material";
-import type { PropsWithChildren } from "react";
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import type { ReactNode } from "react";
 
-const CardComponent = ({ children }: PropsWithChildren) => {
+interface ICardComponent {
+  cardHeaderContent: ReactNode;
+  cardBodyContent: ReactNode;
+}
+
+const CardComponent = ({
+  cardHeaderContent,
+  cardBodyContent,
+}: ICardComponent) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
-    <Card sx={{ height: "100%" }}>
-      <CardContent>{children}</CardContent>
+    <Card
+      sx={{
+        maxWidth: isSmallScreen ? "100%" : 300,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        bgcolor: "white",
+        color: "black",
+        border: "2px solid black",
+        borderRadius: 2,
+        boxShadow: 3,
+        transition: "transform 0.2s ease-in-out",
+        "&:hover": {
+          transform: "scale(1.03)",
+        },
+        "&:focus, & > button:focus": {
+          outline: "none",
+        },
+        "&:focus-visible, & > button:focus-visible": {
+          outline: "none",
+        },
+      }}
+    >
+      <CardActionArea
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+        }}
+      >
+        {cardHeaderContent}
+        <CardContent
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          {cardBodyContent}
+        </CardContent>
+      </CardActionArea>
     </Card>
   );
 };

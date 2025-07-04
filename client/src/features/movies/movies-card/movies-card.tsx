@@ -1,14 +1,8 @@
-import {
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
-  Typography,
-  Box,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { CardMedia, Typography, Box } from "@mui/material";
 import type { IPopularMoviesResponseResult } from "../../../types";
+import RatingBadge from "../../../components/rating-badge/rating-badge";
+import { formatDateWithSuffix } from "../../../utils/date-util";
+import CardComponent from "../../../components/card/card";
 
 const BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w342";
 
@@ -16,68 +10,78 @@ const MoviesCard = (movie: IPopularMoviesResponseResult) => {
   const imageUrl = movie.poster_path
     ? `${BASE_IMAGE_URL}${movie.poster_path}`
     : "/fallback.jpg";
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <Card
-      sx={{
-        maxWidth: isSmallScreen ? "100%" : "300",
-        height: "100%",
-        bgcolor: "white",
-        color: "black",
-        border: "2px solid black",
-        borderRadius: 2,
-        boxShadow: 3,
-        transition: "transform 0.2s ease-in-out",
-        "&:hover": {
-          transform: "scale(1.03)",
-        },
-        "&:focus, & > button:focus": {
-          outline: "none",
-        },
-        "&:focus-visible, & > button:focus-visible": {
-          outline: "none",
-        },
-      }}
-    >
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="360"
-          image={imageUrl}
-          alt={movie.title}
-          sx={{
-            objectFit: "cover",
-            borderTopLeftRadius: 8,
-            borderTopRightRadius: 8,
-          }}
-        />
-        <CardContent>
-          <Box sx={{ minHeight: 60 }}>
+    <CardComponent
+      cardHeaderContent={
+        <>
+          <RatingBadge rating={movie.vote_average * 10} />
+          <CardMedia
+            component="img"
+            height="360"
+            image={imageUrl}
+            alt={movie.title}
+            sx={{
+              objectFit: "cover",
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
+            }}
+          />
+        </>
+      }
+      cardBodyContent={
+        <>
+          <Box>
             <Typography
-              gutterBottom
-              variant="subtitle1"
-              component="div"
+              variant="h6"
+              component="h2"
               sx={{
-                fontWeight: 600,
-                lineHeight: "1.3",
+                fontWeight: 700,
+                fontSize: "1.1rem",
+                lineHeight: 1.4,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 display: "-webkit-box",
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
+                color: "text.primary",
               }}
             >
               {movie.title}
             </Typography>
+
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
+                minHeight: "4.5em",
+                mt: 1,
+              }}
+            >
+              {movie.overview || "No description available."}
+            </Typography>
           </Box>
-          <Typography variant="body2" color="gray">
-            {movie.release_date}
+
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{
+              display: "block",
+              fontStyle: "italic",
+              fontWeight: 700,
+              mt: 2,
+            }}
+          >
+            {formatDateWithSuffix(movie.release_date)}
           </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+        </>
+      }
+    />
   );
 };
 
