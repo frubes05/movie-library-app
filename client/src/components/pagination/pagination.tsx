@@ -1,4 +1,4 @@
-import { Pagination, Stack } from "@mui/material";
+import { Pagination, PaginationItem, Stack } from "@mui/material";
 
 interface IPaginationComponent {
   count?: number;
@@ -37,6 +37,19 @@ const PaginationComponent = ({
         variant="outlined"
         shape="rounded"
         size={isMobile ? "small" : "large"}
+        renderItem={(item) => {
+          if (!isMobile) return <PaginationItem {...item} />;
+
+          if (
+            item.type === "previous" ||
+            item.type === "next" ||
+            (item.type === "page" && item.page === page)
+          ) {
+            return <PaginationItem {...item} component="div" />;
+          }
+
+          return <></>;
+        }}
         sx={{
           "& .MuiPagination-ul": {
             gap: "8px",
@@ -50,15 +63,15 @@ const PaginationComponent = ({
             height: "48px",
           },
           "& .Mui-selected": {
-            backgroundColor: "rgb(135 131 209)",
-            color: "#fff",
+            backgroundColor: "rgb(135 131 209) !important",
+            color: "#fff !important",
             border: "2px solid #e5e7eb",
             "&:hover": {
-              backgroundColor: "#1565c0",
+              backgroundColor: "rgba(135, 131, 209, 0.2) !important",
             },
           },
           "& .MuiPaginationItem-root:hover": {
-            backgroundColor: "#2a2a2a",
+            backgroundColor: "rgba(135, 131, 209, 0.2) !important",
           },
         }}
       />

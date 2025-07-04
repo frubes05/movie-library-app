@@ -20,7 +20,7 @@ const MoviesList = (moviesListData: IMoviesList) => {
                 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
                 key={`skeleton-${crypto.randomUUID()}`}
               >
-                <CardSkeletonComponent isMobile={moviesListData.isMobile} />
+                <CardSkeletonComponent />
               </Grid>
             ))
           : moviesListData.movies?.map((movie) => (

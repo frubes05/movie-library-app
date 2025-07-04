@@ -4,18 +4,16 @@ import type { ReactNode } from "react";
 interface ICardComponent {
   cardHeaderContent: ReactNode;
   cardBodyContent: ReactNode;
-  isMobile: boolean;
 }
 
 const CardComponent = ({
   cardHeaderContent,
   cardBodyContent,
-  isMobile,
 }: ICardComponent) => {
   return (
     <Card
       sx={{
-        maxWidth: isMobile ? "100%" : 300,
+        maxWidth: "100%",
         height: "100%",
         width: "100%",
         display: "flex",

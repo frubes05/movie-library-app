@@ -80,6 +80,7 @@ const SearchForm = ({
                   color: "white",
                   borderRadius: 2,
                 }}
+                disabled={field.value.trim() === ""}
                 onClick={() => {
                   reset({ query: "" });
                 }}

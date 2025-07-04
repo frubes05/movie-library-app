@@ -85,7 +85,6 @@ const MoviesCard = (movie: IMoviesCard) => {
           </Typography>
         </>
       }
-      isMobile={movie.isMobile}
     />
   );
 };
