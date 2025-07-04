@@ -4,7 +4,6 @@ interface GlobalContextType {
   searchQuery: string;
   page: number;
   onPageChange: (page: number) => void;
-  input: string;
   onInputChange: (val: string) => void;
   onSubmitSearch: (query: string) => void;
   isMobile: boolean;

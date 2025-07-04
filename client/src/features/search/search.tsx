@@ -5,7 +5,6 @@ import SearchIcon from "@mui/icons-material/Search";
 
 interface ISearchForm {
   query: string;
-  input: string;
   onInputChange: (input: string) => void;
   onSubmitSearch: (input: string) => void;
   isMobile: boolean;
@@ -13,12 +12,11 @@ interface ISearchForm {
 
 const SearchForm = ({
   query,
-  input,
   onInputChange,
   onSubmitSearch,
   isMobile,
 }: ISearchForm) => {
-  const { control, handleSubmit } = useForm<{ query: string }>({
+  const { control, handleSubmit, reset } = useForm<{ query: string }>({
     defaultValues: { query },
   });
 
@@ -51,7 +49,7 @@ const SearchForm = ({
                 fullWidth
                 label="Search for a movie"
                 variant="outlined"
-                value={input}
+                value={field.value}
                 onChange={(e) => {
                   onInputChange(e.target.value);
                   field.onChange(e);
@@ -81,6 +79,9 @@ const SearchForm = ({
                   bgcolor: "black",
                   color: "white",
                   borderRadius: 2,
+                }}
+                onClick={() => {
+                  reset({ query: "" });
                 }}
               >
                 <ClearIcon />

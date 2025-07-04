@@ -18,7 +18,7 @@ export const GlobalContextProvider = ({
   const [searchQuery, setSearchQuery] = useState(
     () => searchParams.get("query") ?? ""
   );
-  const [input, setInput] = useState("");
+  const [, setInput] = useState("");
   const isMobile = useMobileBreakpoint();
 
   const onSearchParamsChange = useCallback(
@@ -73,7 +73,6 @@ export const GlobalContextProvider = ({
     () => ({
       searchQuery,
       page: searchQuery ? searchPage : popularPage,
-      input,
       isMobile,
       onPageChange,
       onInputChange,
@@ -83,7 +82,6 @@ export const GlobalContextProvider = ({
       searchQuery,
       searchPage,
       popularPage,
-      input,
       isMobile,
       onInputChange,
       onPageChange,

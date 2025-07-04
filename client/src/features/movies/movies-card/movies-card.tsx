@@ -1,6 +1,6 @@
 import { CardMedia, Typography, Box } from "@mui/material";
 import type { IPopularMoviesResponseResult } from "../../../types";
-import RatingBadge from "../../../components/rating-badge/rating-badge";
+import RatingBadge from "../rating-badge/rating-badge";
 import { formatDateWithSuffix } from "../../../utils/date-util";
 import CardComponent from "../../../components/card/card";
 
