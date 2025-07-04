@@ -24,6 +24,7 @@ const CardComponent = ({
       sx={{
         maxWidth: isSmallScreen ? "100%" : 300,
         height: "100%",
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         bgcolor: "white",

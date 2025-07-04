@@ -20,14 +20,10 @@ const MainPage = () => {
   } = useMovieContext();
   const isSearching = Boolean(searchQuery);
 
-  const { data: popularData } = useGetPopularMoviesQuery(
-    { page },
-    { skip: isSearching }
-  );
-  const { data: searchData } = useSearchMoviesQuery(
-    { query: searchQuery, page },
-    { skip: !isSearching }
-  );
+  const { data: popularData, isLoading: isPopularDataLoading } =
+    useGetPopularMoviesQuery({ page }, { skip: isSearching });
+  const { data: searchData, isLoading: isSearchDataLoading } =
+    useSearchMoviesQuery({ query: searchQuery, page }, { skip: !isSearching });
 
   const movies = useMemo(
     () => (isSearching ? searchData?.results : popularData?.results),
@@ -40,6 +36,10 @@ const MainPage = () => {
   const count = useMemo(
     () => (!isSearching ? 500 : searchData?.total_pages),
     [isSearching, searchData]
+  );
+  const isLoading = useMemo(
+    () => isPopularDataLoading || isSearchDataLoading,
+    [isPopularDataLoading, isSearchDataLoading]
   );
 
   return (
@@ -61,6 +61,7 @@ const MainPage = () => {
           count={count}
           page={currentPage}
           onPageChange={onPageChange}
+          isLoading={isLoading}
         />
       }
     />
