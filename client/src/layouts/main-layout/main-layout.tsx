@@ -1,13 +1,7 @@
-import {
-  Container,
-  Box,
-  Typography,
-  Paper,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { Container, Box, Typography, Paper } from "@mui/material";
 import MovieFilterIcon from "@mui/icons-material/MovieFilter";
 import type { ReactNode } from "react";
+import { useGlobalContext } from "../../hooks/global";
 
 type MainLayoutProps = {
   title?: string;
@@ -16,8 +10,7 @@ type MainLayoutProps = {
 };
 
 const MainLayout = ({ title, searchSection, content }: MainLayoutProps) => {
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const { isMobile } = useGlobalContext();
 
   return (
     <Container maxWidth="lg" sx={{ pt: 6, pb: 6 }}>
@@ -29,12 +22,12 @@ const MainLayout = ({ title, searchSection, content }: MainLayoutProps) => {
           alignItems="flex-end"
           gap="12px"
         >
-          <MovieFilterIcon sx={{ fontSize: isSmallScreen ? "48px" : "64px" }} />
+          <MovieFilterIcon sx={{ fontSize: isMobile ? "48px" : "64px" }} />
           <Typography
             variant="h1"
             fontWeight={700}
             marginBottom={0}
-            fontSize={isSmallScreen ? "32px" : "48px"}
+            fontSize={isMobile ? "32px" : "48px"}
             gutterBottom
           >
             {title}

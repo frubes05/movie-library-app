@@ -1,4 +1,8 @@
 export const formatDateWithSuffix = (dateInput: string | Date): string => {
+  if (!dateInput || isNaN(new Date(dateInput).getTime())) {
+    return "Unknown release date";
+  }
+
   const date = new Date(dateInput);
   const day = date.getDate();
   const month = new Intl.DateTimeFormat("en-US", { month: "long" }).format(

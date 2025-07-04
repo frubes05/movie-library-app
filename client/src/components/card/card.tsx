@@ -1,28 +1,21 @@
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Card, CardActionArea, CardContent } from "@mui/material";
 import type { ReactNode } from "react";
 
 interface ICardComponent {
   cardHeaderContent: ReactNode;
   cardBodyContent: ReactNode;
+  isMobile: boolean;
 }
 
 const CardComponent = ({
   cardHeaderContent,
   cardBodyContent,
+  isMobile,
 }: ICardComponent) => {
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
   return (
     <Card
       sx={{
-        maxWidth: isSmallScreen ? "100%" : 300,
+        maxWidth: isMobile ? "100%" : 300,
         height: "100%",
         width: "100%",
         display: "flex",

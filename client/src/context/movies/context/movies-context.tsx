@@ -1,14 +1,13 @@
 import { createContext } from "react";
+import type { IPopularMoviesResponseResult } from "../../../types";
 
-interface MovieContextType {
-  searchQuery: string;
-  page: number;
-  onPageChange: (page: number) => void;
-  input: string;
-  onInputChange: (val: string) => void;
-  onSubmitSearch: (query: string) => void;
+interface MoviesContextType {
+  movies?: Array<IPopularMoviesResponseResult>;
+  currentPage?: number;
+  count?: number;
+  isLoading?: boolean;
 }
 
-export const MovieContext = createContext<MovieContextType | undefined>(
+export const MoviesContext = createContext<MoviesContextType | undefined>(
   undefined
 );

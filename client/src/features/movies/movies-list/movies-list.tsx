@@ -1,29 +1,26 @@
 import { Box, Grid } from "@mui/material";
 import MoviesCard from "../movies-card/movies-card";
 import type { IPopularMoviesResponseResult } from "../../../types";
-import PaginationComponent from "../../../components/pagination/pagination";
 import CardSkeletonComponent from "../../../components/card/card-skeleton/card-skeleton";
 
 interface IMoviesList {
   movies?: Array<IPopularMoviesResponseResult>;
-  page?: number;
-  count?: number;
-  onPageChange: (elem: number) => void;
-  isLoading: boolean;
+  isLoading?: boolean;
+  isMobile: boolean;
 }
 
 const MoviesList = (moviesListData: IMoviesList) => {
   return (
     <Box>
       <Grid container spacing={3}>
-        {!moviesListData.isLoading
-          ? Array.from({ length: 8 }).map((_, idx) => (
+        {moviesListData.isLoading
+          ? Array.from({ length: 20 }).map(() => (
               <Grid
                 container
                 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
-                key={`skeleton-${idx}`}
+                key={`skeleton-${crypto.randomUUID()}`}
               >
-                <CardSkeletonComponent />
+                <CardSkeletonComponent isMobile={moviesListData.isMobile} />
               </Grid>
             ))
           : moviesListData.movies?.map((movie) => (
@@ -32,19 +29,10 @@ const MoviesList = (moviesListData: IMoviesList) => {
                 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
                 key={movie.id}
               >
-                <MoviesCard {...movie} />
+                <MoviesCard {...movie} isMobile={moviesListData.isMobile} />
               </Grid>
             ))}
       </Grid>
-
-      <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
-        <PaginationComponent
-          count={moviesListData?.count}
-          page={moviesListData?.page}
-          onChange={(_, value) => moviesListData.onPageChange(value)}
-          color="primary"
-        />
-      </Box>
     </Box>
   );
 };

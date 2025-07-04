@@ -1,7 +1,7 @@
 import { CardContent, Skeleton, Typography, Box } from "@mui/material";
 import CardComponent from "../card";
 
-const CardSkeletonComponent = () => {
+const CardSkeletonComponent = ({ isMobile }: { isMobile: boolean }) => {
   const cardHeaderContent = (
     <Skeleton
       variant="rectangular"
@@ -47,6 +47,7 @@ const CardSkeletonComponent = () => {
     <CardComponent
       cardHeaderContent={cardHeaderContent}
       cardBodyContent={cardBodyContent}
+      isMobile={isMobile}
     />
   );
 };

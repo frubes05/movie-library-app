@@ -1,10 +1,11 @@
-import { Pagination, Stack, useMediaQuery, useTheme } from "@mui/material";
+import { Pagination, Stack } from "@mui/material";
 
 interface IPaginationComponent {
   count?: number;
   page?: number;
   onChange: (_: unknown, value: number) => void;
   color: "primary" | "secondary";
+  isMobile: boolean;
 }
 
 const PaginationComponent = ({
@@ -12,10 +13,8 @@ const PaginationComponent = ({
   page = 1,
   onChange,
   color,
+  isMobile,
 }: IPaginationComponent) => {
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
   return (
     <Stack
       direction="row"
@@ -37,7 +36,7 @@ const PaginationComponent = ({
         color={color}
         variant="outlined"
         shape="rounded"
-        size={isSmallScreen ? "small" : "large"}
+        size={isMobile ? "small" : "large"}
         sx={{
           "& .MuiPagination-ul": {
             gap: "8px",

@@ -1,13 +1,9 @@
 import { Stack } from "@mui/material";
 import MainLayout from "../../layouts/main-layout/main-layout";
-import MoviesList from "../../features/movies/movies-list/movies-list";
 import SearchForm from "../../features/search/search-form/search-form";
-import {
-  useGetPopularMoviesQuery,
-  useSearchMoviesQuery,
-} from "../../store/apis";
-import { useMovieContext } from "../../hooks/movies";
-import { useMemo } from "react";
+import { useGlobalContext } from "../../hooks/global";
+import { MoviesContextProvider } from "../../context/movies/provider";
+import MoviesWrapper from "../../features/movies/movies-wrapper/movies-wrapper";
 
 const MainPage = () => {
   const {
@@ -17,30 +13,8 @@ const MainPage = () => {
     input,
     onInputChange,
     onSubmitSearch,
-  } = useMovieContext();
-  const isSearching = Boolean(searchQuery);
-
-  const { data: popularData, isLoading: isPopularDataLoading } =
-    useGetPopularMoviesQuery({ page }, { skip: isSearching });
-  const { data: searchData, isLoading: isSearchDataLoading } =
-    useSearchMoviesQuery({ query: searchQuery, page }, { skip: !isSearching });
-
-  const movies = useMemo(
-    () => (isSearching ? searchData?.results : popularData?.results),
-    [isSearching, searchData, popularData]
-  );
-  const currentPage = useMemo(
-    () => (isSearching ? searchData?.page : popularData?.page),
-    [isSearching, searchData, popularData]
-  );
-  const count = useMemo(
-    () => (!isSearching ? 500 : searchData?.total_pages),
-    [isSearching, searchData]
-  );
-  const isLoading = useMemo(
-    () => isPopularDataLoading || isSearchDataLoading,
-    [isPopularDataLoading, isSearchDataLoading]
-  );
+    isMobile,
+  } = useGlobalContext();
 
   return (
     <MainLayout
@@ -52,17 +26,16 @@ const MainPage = () => {
             input={input}
             onInputChange={onInputChange}
             onSubmitSearch={onSubmitSearch}
+            isMobile={isMobile}
           />
         </Stack>
       }
       content={
-        <MoviesList
-          movies={movies}
-          count={count}
-          page={currentPage}
-          onPageChange={onPageChange}
-          isLoading={isLoading}
-        />
+        <MoviesContextProvider
+          movieData={{ page, searchQuery, isSearching: Boolean(searchQuery) }}
+        >
+          <MoviesWrapper onPageChange={onPageChange} isMobile={isMobile} />
+        </MoviesContextProvider>
       }
     />
   );

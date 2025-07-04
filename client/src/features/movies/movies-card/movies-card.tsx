@@ -6,7 +6,11 @@ import CardComponent from "../../../components/card/card";
 
 const BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w342";
 
-const MoviesCard = (movie: IPopularMoviesResponseResult) => {
+interface IMoviesCard extends IPopularMoviesResponseResult {
+  isMobile: boolean;
+}
+
+const MoviesCard = (movie: IMoviesCard) => {
   const imageUrl = movie.poster_path
     ? `${BASE_IMAGE_URL}${movie.poster_path}`
     : "/fallback.jpg";
@@ -81,6 +85,7 @@ const MoviesCard = (movie: IPopularMoviesResponseResult) => {
           </Typography>
         </>
       }
+      isMobile={movie.isMobile}
     />
   );
 };

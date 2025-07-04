@@ -1,12 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
-import {
-  TextField,
-  Button,
-  Stack,
-  Box,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { TextField, Button, Stack, Box } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -15,6 +8,7 @@ interface ISearchForm {
   input: string;
   onInputChange: (input: string) => void;
   onSubmitSearch: (input: string) => void;
+  isMobile: boolean;
 }
 
 const SearchForm = ({
@@ -22,25 +16,24 @@ const SearchForm = ({
   input,
   onInputChange,
   onSubmitSearch,
+  isMobile,
 }: ISearchForm) => {
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const { control, handleSubmit } = useForm<{ query: string }>({
     defaultValues: { query },
   });
 
-  const onSubmit = (data: { query: string }) => {
-    onSubmitSearch(data.query.trim());
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit((data: { query: string }) =>
+        onSubmitSearch(data.query.trim())
+      )}
+    >
       <Stack
         direction="row"
         spacing={2}
         sx={{
           display: "flex",
-          flexDirection: isSmallScreen ? "column" : "row",
+          flexDirection: isMobile ? "column" : "row",
           gap: "24px",
         }}
       >
@@ -66,7 +59,9 @@ const SearchForm = ({
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
-                    handleSubmit(onSubmit)();
+                    handleSubmit((data: { query: string }) =>
+                      onSubmitSearch(data.query.trim())
+                    )();
                   }
                 }}
                 sx={{
@@ -99,10 +94,10 @@ const SearchForm = ({
           variant="contained"
           color="primary"
           sx={{
-            width: isSmallScreen ? "100%" : "auto",
-            minWidth: isSmallScreen ? "unset" : "150px",
+            width: isMobile ? "100%" : "auto",
+            minWidth: isMobile ? "unset" : "150px",
             margin: "0 !important",
-            height: isSmallScreen ? "58px" : "auto",
+            height: isMobile ? "58px" : "auto",
             borderRadius: 2,
             bgcolor: "rgb(135 131 208)",
           }}

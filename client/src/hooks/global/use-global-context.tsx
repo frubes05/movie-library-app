@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { MoviesContext } from "../../context/movies/context";
+import { GlobalContext } from "../../context/global/context";
 
-export const useMoviesContext = () => {
-  const context = useContext(MoviesContext);
+export const useGlobalContext = () => {
+  const context = useContext(GlobalContext);
 
   if (!context)
     throw new Error("useMovieContext must be used inside MovieProvider");
