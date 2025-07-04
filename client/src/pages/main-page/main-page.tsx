@@ -44,8 +44,8 @@ const MainPage = () => {
 
   return (
     <MainLayout
-      title="Movies List"
-      filterSection={
+      title="Movies Library"
+      searchSection={
         <Stack spacing={2}>
           <SearchForm
             query={searchQuery}

@@ -13,9 +13,9 @@ interface IMoviesList {
 const MoviesList = (moviesListData: IMoviesList) => {
   return (
     <Box>
-      <Grid container spacing={2}>
+      <Grid container spacing={3}>
         {moviesListData.movies?.map((movie) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={movie.id}>
+          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={movie.id}>
             <MoviesCard {...movie} />
           </Grid>
         ))}
