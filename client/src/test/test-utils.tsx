@@ -34,6 +34,9 @@ const AllTheProviders = ({ children }: AllTheProvidersProps) => {
   )
 }
 
+// Export the providers component for direct use
+export const AppProviders = AllTheProviders
+
 const customRender = (
   ui: ReactElement,
   options?: Omit<RenderOptions, 'wrapper'>
