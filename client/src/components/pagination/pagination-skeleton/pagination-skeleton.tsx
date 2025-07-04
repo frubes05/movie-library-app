@@ -24,6 +24,7 @@ const PaginationSkeletonComponent = ({ isMobile }: { isMobile: boolean }) => {
             borderRadius: "8px",
             backgroundColor: "#e0e0e0",
           }}
+          data-testid="skeleton"
         />
       ))}
     </Stack>

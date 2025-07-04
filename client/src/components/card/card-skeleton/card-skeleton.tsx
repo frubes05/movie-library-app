@@ -8,6 +8,7 @@ const CardSkeletonComponent = () => {
       animation="wave"
       width="100%"
       height={360}
+      data-testid="skeleton"
       sx={{
         objectFit: "cover",
         borderTopLeftRadius: 8,

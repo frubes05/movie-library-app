@@ -12,6 +12,7 @@ const CardComponent = ({
 }: ICardComponent) => {
   return (
     <Card
+      data-testid="card"
       sx={{
         maxWidth: "100%",
         height: "100%",

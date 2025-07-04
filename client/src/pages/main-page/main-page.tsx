@@ -15,24 +15,26 @@ const MainPage = () => {
   } = useGlobalContext();
 
   return (
-    <MoviesContextProvider
-      movieData={{ page, searchQuery, isSearching: Boolean(searchQuery) }}
-    >
-      <MainLayout
-        title="Movies Library"
-        searchSection={
-          <SearchWrapper
-            query={searchQuery}
-            onInputChange={onInputChange}
-            onSubmitSearch={onSubmitSearch}
-            isMobile={isMobile}
-          />
-        }
-        content={
-          <MoviesWrapper onPageChange={onPageChange} isMobile={isMobile} />
-        }
-      />
-    </MoviesContextProvider>
+    <main>
+      <MoviesContextProvider
+        movieData={{ page, searchQuery, isSearching: Boolean(searchQuery) }}
+      >
+        <MainLayout
+          title="Movies Library"
+          searchSection={
+            <SearchWrapper
+              query={searchQuery}
+              onInputChange={onInputChange}
+              onSubmitSearch={onSubmitSearch}
+              isMobile={isMobile}
+            />
+          }
+          content={
+            <MoviesWrapper onPageChange={onPageChange} isMobile={isMobile} />
+          }
+        />
+      </MoviesContextProvider>
+    </main>
   );
 };
 
