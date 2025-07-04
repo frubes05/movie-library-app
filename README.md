@@ -1,0 +1,203 @@
+# Movies Library
+
+A full-stack movies library application built with React, TypeScript, Node.js, and Express. The application allows users to browse popular movies and search for specific titles using The Movie Database (TMDB) API.
+
+## Features
+
+- **Browse Popular Movies**: View trending and popular movies with pagination
+- **Search Functionality**: Search for movies by title with real-time results
+- **Responsive Design**: Optimized for both desktop and mobile devices
+- **Caching**: Server-side caching for improved performance
+- **Modern UI**: Clean, Material-UI based interface with hover effects and animations
+- **Rating System**: Visual rating badges with color-coded scores
+
+## Tech Stack
+
+### Frontend
+- **React 19** with TypeScript
+- **Material-UI (MUI)** for components and styling
+- **Redux Toolkit** with RTK Query for state management
+- **React Router** for navigation
+- **React Hook Form** for form handling
+- **Vite** for build tooling
+
+### Backend
+- **Node.js** with Express
+- **TypeScript** for type safety
+- **Node-Cache** for in-memory caching
+- **CORS** for cross-origin requests
+
+### Testing
+- **Vitest** and **React Testing Library** for frontend testing
+- **Jest** and **Supertest** for backend testing
+- Comprehensive test coverage for components, hooks, services, and API endpoints
+
+## Project Structure
+
+```
+├── client/                 # Frontend React application
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── features/       # Feature-specific components
+│   │   ├── hooks/          # Custom React hooks
+│   │   ├── context/        # React context providers
+│   │   ├── store/          # Redux store and API slices
+│   │   ├── types/          # TypeScript type definitions
+│   │   ├── utils/          # Utility functions
+│   │   └── test/           # Test utilities and setup
+│   └── __tests__/          # Component and hook tests
+├── server/                 # Backend Express application
+│   ├── controllers/        # Route controllers
+│   ├── services/           # Business logic and external API calls
+│   ├── helpers/            # Utility classes and functions
+│   ├── middlewares/        # Express middlewares
+│   ├── cache/              # Caching configuration
+│   └── __tests__/          # Backend tests
+└── README.md
+```
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+- TMDB API key (get one at [themoviedb.org](https://www.themoviedb.org/settings/api))
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd movies-library
+   ```
+
+2. **Install dependencies**
+   ```bash
+   # Install client dependencies
+   cd client
+   npm install
+
+   # Install server dependencies
+   cd ../server
+   npm install
+   ```
+
+3. **Environment Setup**
+   
+   Create a `.env` file in the server directory:
+   ```env
+   PORT=9000
+   TMDB_API_KEY=your_tmdb_api_key_here
+   TMDB_BASE_URL=https://api.themoviedb.org/3
+   NODE_ENV=development
+   ```
+
+4. **Start the development servers**
+   
+   Terminal 1 (Backend):
+   ```bash
+   cd server
+   npm run dev
+   ```
+   
+   Terminal 2 (Frontend):
+   ```bash
+   cd client
+   npm run dev
+   ```
+
+The application will be available at:
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:9000
+
+## Testing
+
+### Frontend Tests
+```bash
+cd client
+
+# Run tests
+npm test
+
+# Run tests with UI
+npm run test:ui
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+### Backend Tests
+```bash
+cd server
+
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+## API Endpoints
+
+### Movies API
+- `GET /api/movies/popular?page=1&language=en-US` - Get popular movies
+- `GET /api/movies/search?query=movie&page=1` - Search movies by title
+
+## Key Features Implementation
+
+### Caching Strategy
+- Server-side caching using Node-Cache with 1-hour TTL
+- Singleton pattern for cache management
+- Automatic cache key generation based on request parameters
+
+### Responsive Design
+- Mobile-first approach with Material-UI breakpoints
+- Custom hooks for responsive behavior
+- Optimized layouts for different screen sizes
+
+### State Management
+- Redux Toolkit for global state
+- RTK Query for API data fetching and caching
+- React Context for UI state and user interactions
+
+### Error Handling
+- Comprehensive error boundaries
+- Graceful fallbacks for missing data
+- User-friendly error messages
+
+## Testing Strategy
+
+### Frontend Testing
+- **Unit Tests**: Individual components and utilities
+- **Integration Tests**: Component interactions and hooks
+- **Mocking**: External dependencies and API calls
+- **Coverage**: Comprehensive test coverage for critical paths
+
+### Backend Testing
+- **Unit Tests**: Controllers, services, and helpers
+- **Integration Tests**: API endpoints with supertest
+- **Mocking**: External API calls and dependencies
+- **Error Scenarios**: Testing error handling and edge cases
+
+## Performance Optimizations
+
+- **Lazy Loading**: Code splitting for better initial load times
+- **Caching**: Both client-side (RTK Query) and server-side caching
+- **Image Optimization**: Responsive images with fallbacks
+- **Pagination**: Efficient data loading with pagination
+- **Debouncing**: Search input debouncing for better UX
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the ISC License.
