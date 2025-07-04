@@ -12,7 +12,7 @@ const PORT = process.env.PORT;
 
 app.use(cors());
 
-app.use("/movies", movieRoutes);
+app.use("/api/movies", movieRoutes);
 
 app.use(errorHandler);
 
