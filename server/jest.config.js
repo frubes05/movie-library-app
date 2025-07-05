@@ -14,6 +14,8 @@ module.exports = {
     '!jest.config.js',
     '!jest.setup.js',
     '!index.ts', // Exclude main entry file
+    '!**/__tests__/**',
+    '!**/test-helpers.ts',
   ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   coverageDirectory: 'coverage',
