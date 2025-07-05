@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { fetchPopularMovies, searchMoviesByTitle } from "../services";
-import { CachingHelper } from "../helpers";
+import { AdvancedCachingHelper } from "../helpers/advanced-caching-helper";
 
 export const getPopularMovies = async (
   req: Request,
@@ -10,18 +10,38 @@ export const getPopularMovies = async (
   const page = Number(req.query.page) || 1;
   const language = (req.query.language as string) || "en-US";
 
-  const cacheKey = `popularMovies?page=${page}&language=${language}`;
-  const cacheHelper = CachingHelper.getInstance(cacheKey);
+  const cacheKey = `popularMovies:${page}:${language}`;
+  const cacheHelper = AdvancedCachingHelper.getInstance(cacheKey);
 
-  if (cacheHelper.respondWithCache(res)) return;
+  // Try to respond with cached data
+  if (cacheHelper.respondWithCache(res, {
+    maxAge: 3600,
+    staleWhileRevalidate: true
+  })) {
+    return;
+  }
 
   try {
     const data = await fetchPopularMovies({ page, language });
-    cacheHelper.setToCache(data);
-    res.set("Cache-Control", "public, max-age=3600");
+    
+    // Cache with advanced configuration
+    cacheHelper.setToCache(data, {
+      ttl: 3600, // 1 hour
+      tags: ['movies', 'popular', `page:${page}`],
+      staleWhileRevalidate: true
+    });
+
+    res.set({
+      'Cache-Control': 'public, max-age=3600, stale-while-revalidate=7200',
+      'X-Cache': 'MISS'
+    });
     res.status(200).json(data);
   } catch (err) {
-    next(err);
+    // Enhanced error with context
+    const error = err as Error;
+    error.message = `Failed to fetch popular movies: ${error.message}`;
+    (error as any).context = { page, language, endpoint: 'popular' };
+    next(error);
   }
 };
 
@@ -31,22 +51,90 @@ export const searchMovies = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const query = ((req.query.query as string) || "").toLowerCase();
+    const query = ((req.query.query as string) || "").toLowerCase().trim();
     const page = Number(req.query.page) || 1;
 
     if (!query) {
-      res.status(400).json({ error: "Query parameter required" });
+      const error = new Error("Query parameter required");
+      (error as any).statusCode = 400;
+      (error as any).context = { endpoint: 'search', missingParam: 'query' };
+      throw error;
+    }
+
+    const cacheKey = `searchMovies:${encodeURIComponent(query)}:${page}`;
+    const cacheHelper = AdvancedCachingHelper.getInstance(cacheKey);
+
+    // Try to respond with cached data
+    if (cacheHelper.respondWithCache(res, {
+      maxAge: 1800, // 30 minutes for search results
+      staleWhileRevalidate: true
+    })) {
       return;
     }
 
-    const cacheKey = `searchMovies?page=${page}&language=en-US&query=${query}`;
-    const cacheHelper = CachingHelper.getInstance(cacheKey);
-
-    if (cacheHelper.respondWithCache(res)) return;
-
     const result = await searchMoviesByTitle(query, page);
-    cacheHelper.setToCache(result);
+    
+    // Cache search results with shorter TTL
+    cacheHelper.setToCache(result, {
+      ttl: 1800, // 30 minutes
+      tags: ['movies', 'search', `query:${query}`, `page:${page}`],
+      staleWhileRevalidate: true
+    });
+
+    res.set({
+      'Cache-Control': 'public, max-age=1800, stale-while-revalidate=3600',
+      'X-Cache': 'MISS'
+    });
     res.status(200).json(result);
+  } catch (err) {
+    // Enhanced error with context
+    const error = err as Error;
+    if (!(error as any).statusCode) {
+      error.message = `Failed to search movies: ${error.message}`;
+      (error as any).context = { 
+        query: req.query.query, 
+        page: req.query.page, 
+        endpoint: 'search' 
+      };
+    }
+    next(error);
+  }
+};
+
+// Cache management endpoints
+export const invalidateCache = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { tag } = req.params;
+    
+    if (!tag) {
+      const error = new Error("Tag parameter required");
+      (error as any).statusCode = 400;
+      throw error;
+    }
+
+    const invalidatedCount = AdvancedCachingHelper.invalidateByTag(tag);
+    
+    res.status(200).json({
+      message: `Cache invalidated for tag: ${tag}`,
+      invalidatedKeys: invalidatedCount
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getCacheStats = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const stats = AdvancedCachingHelper.getCacheStats();
+    res.status(200).json(stats);
   } catch (err) {
     next(err);
   }

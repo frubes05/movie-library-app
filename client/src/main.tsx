@@ -5,15 +5,20 @@ import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { GlobalContextProvider } from "./context/global";
+import { NotificationProvider } from "./context/notification";
 import { BrowserRouter } from "react-router-dom";
+import NotificationSnackbar from "./components/notification/notification-snackbar";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <GlobalContextProvider>
-          <App />
-        </GlobalContextProvider>
+        <NotificationProvider>
+          <GlobalContextProvider>
+            <App />
+            <NotificationSnackbar />
+          </GlobalContextProvider>
+        </NotificationProvider>
       </BrowserRouter>
     </Provider>
   </StrictMode>

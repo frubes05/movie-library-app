@@ -2,6 +2,7 @@ import { useForm, Controller } from "react-hook-form";
 import { TextField, Button, Stack, Box } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
+import { useNotification } from "../../context/notification";
 
 interface ISearchForm {
   query: string;
@@ -19,12 +20,51 @@ const SearchForm = ({
   const { control, handleSubmit, reset } = useForm<{ query: string }>({
     defaultValues: { query },
   });
+  const { showNotification } = useNotification();
+
+  const handleFormSubmit = (data: { query: string }) => {
+    const trimmedQuery = data.query.trim();
+    
+    if (!trimmedQuery) {
+      showNotification(
+        "Please enter a search term to find movies.",
+        "warning",
+        4000
+      );
+      return;
+    }
+
+    if (trimmedQuery.length < 2) {
+      showNotification(
+        "Search term must be at least 2 characters long.",
+        "warning",
+        4000
+      );
+      return;
+    }
+
+    onSubmitSearch(trimmedQuery);
+    showNotification(
+      `Searching for "${trimmedQuery}"...`,
+      "info",
+      3000
+    );
+  };
+
+  const handleReset = () => {
+    reset({ query: "" });
+    onInputChange("");
+    onSubmitSearch("");
+    showNotification(
+      "Search cleared. Showing popular movies.",
+      "info",
+      3000
+    );
+  };
 
   return (
     <form
-      onSubmit={handleSubmit((data: { query: string }) =>
-        onSubmitSearch(data.query.trim())
-      )}
+      onSubmit={handleSubmit(handleFormSubmit)}
       data-testid="search"
     >
       <Stack
@@ -58,15 +98,19 @@ const SearchForm = ({
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
-                    handleSubmit((data: { query: string }) =>
-                      onSubmitSearch(data.query.trim())
-                    )();
+                    handleSubmit(handleFormSubmit)();
                   }
                 }}
                 sx={{
                   border: "2px solid black",
                   borderRadius: 2,
                 }}
+                error={field.value.length > 0 && field.value.trim().length < 2}
+                helperText={
+                  field.value.length > 0 && field.value.trim().length < 2
+                    ? "Search term must be at least 2 characters"
+                    : ""
+                }
               />
               <Button
                 type="button"
@@ -82,9 +126,7 @@ const SearchForm = ({
                   borderRadius: 2,
                 }}
                 disabled={field.value.trim() === ""}
-                onClick={() => {
-                  reset({ query: "" });
-                }}
+                onClick={handleReset}
               >
                 <ClearIcon />
                 Reset
