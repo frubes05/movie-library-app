@@ -168,19 +168,26 @@ npm run test:coverage
 ### Frontend Testing
 
 - **Unit Tests**: Individual components and utilities
-- **Integration Tests**: Component interactions and hooks
 - **Mocking**: External dependencies and API calls
 - **Coverage**: Comprehensive test coverage for critical paths
 
 ### Backend Testing
 
 - **Unit Tests**: Controllers, services, and helpers
-- **Integration Tests**: API endpoints with supertest
 - **Mocking**: External API calls and dependencies
 
 ## Performance Optimizations
 
 - **Lazy Loading**: Code splitting for better initial load times
 - **Caching**: Both client-side (RTK Query) and server-side caching
-- **Image Optimization**: Responsive images with fallbacks
+- **Image Optimization**: Responsive images with fallbacks (Maybe would use better one next time)
 - **Pagination**: Efficient data loading with pagination
+
+## Key Improvement Areas (The ones I did not do, but would be added next)
+
+- **Global Error Handling**: On backend there is an error handler, but on frontend there needs to be global error handling context + toast message(snackbar) system
+- **Input Validation**: Using Zod ili Yup resolvers with react-hook-form (schema-based validation)
+- **Rate limiter in backend**: Prevent abuse and accidental DDoS by limiting repeated API hits from the same IP.
+- **Movie Details**: Expand functionality with information about movie: cast, trailers, reviews, and recommendations (modal or custom page).
+- **More Reusable components**: Abstract shared UI elements like buttons, modals, loaders, and toasts for consistency
+- **Add Docker image**: For both directories use Docker compose
