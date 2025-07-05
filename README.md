@@ -193,3 +193,4 @@ npm run test:coverage
 - **Movie Details**: Expand functionality with information about movie: cast, trailers, reviews, and recommendations (modal or custom page).
 - **More Reusable components**: Abstract shared UI elements like buttons, modals, loaders, and toasts for consistency
 - **Add Docker image**: For both directories use Docker compose
+- **Routing (if multiple pages)**: Definitely nice to have, but for simple app like this it's not needed
