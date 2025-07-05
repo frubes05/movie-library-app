@@ -40,6 +40,17 @@ describe('CachingHelper', () => {
 
       expect(instance1).not.toBe(instance2)
     })
+
+    it('should maintain singleton pattern across multiple calls', () => {
+      const instances = Array.from({ length: 5 }, () => 
+        CachingHelper.getInstance('singleton-test')
+      )
+
+      const firstInstance = instances[0]
+      instances.forEach(instance => {
+        expect(instance).toBe(firstInstance)
+      })
+    })
   })
 
   describe('getFromCache', () => {
@@ -61,6 +72,19 @@ describe('CachingHelper', () => {
       expect(result).toBeUndefined()
       expect(mockedCache.get).toHaveBeenCalledWith('test-key')
     })
+
+    it('should handle complex data types', () => {
+      const complexData = {
+        movies: [{ id: 1, title: 'Test' }],
+        pagination: { page: 1, total: 100 },
+        metadata: { timestamp: Date.now() }
+      }
+      mockedCache.get.mockReturnValue(complexData)
+
+      const result = cachingHelper.getFromCache()
+
+      expect(result).toEqual(complexData)
+    })
   })
 
   describe('setToCache', () => {
@@ -79,6 +103,24 @@ describe('CachingHelper', () => {
       cachingHelper.setToCache(testData, ttl)
 
       expect(mockedCache.set).toHaveBeenCalledWith('test-key', testData, ttl)
+    })
+
+    it('should handle null and undefined values', () => {
+      cachingHelper.setToCache(null)
+      expect(mockedCache.set).toHaveBeenCalledWith('test-key', null)
+
+      cachingHelper.setToCache(undefined)
+      expect(mockedCache.set).toHaveBeenCalledWith('test-key', undefined)
+    })
+
+    it('should handle different TTL values', () => {
+      const testData = { test: 'data' }
+      
+      cachingHelper.setToCache(testData, 0)
+      expect(mockedCache.set).toHaveBeenCalledWith('test-key', testData, 0)
+
+      cachingHelper.setToCache(testData, 3600)
+      expect(mockedCache.set).toHaveBeenCalledWith('test-key', testData, 3600)
     })
   })
 
@@ -114,6 +156,17 @@ describe('CachingHelper', () => {
       expect(mockResponse.set).not.toHaveBeenCalled()
       expect(mockResponse.status).not.toHaveBeenCalled()
       expect(mockResponse.json).not.toHaveBeenCalled()
+    })
+
+    it('should handle different maxAge values', () => {
+      const testData = { test: 'data' }
+      mockedCache.get.mockReturnValue(testData)
+
+      cachingHelper.respondWithCache(mockResponse as Response, 1800)
+      expect(mockResponse.set).toHaveBeenCalledWith('Cache-Control', 'public, max-age=1800')
+
+      cachingHelper.respondWithCache(mockResponse as Response, 0)
+      expect(mockResponse.set).toHaveBeenCalledWith('Cache-Control', 'public, max-age=0')
     })
   })
 })

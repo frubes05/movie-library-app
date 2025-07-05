@@ -70,4 +70,42 @@ describe('Error Handler Middleware', () => {
       details: undefined,
     })
   })
+
+  it('should handle null and undefined errors', () => {
+    errorHandler(null, mockRequest as Request, mockResponse as Response, mockNext)
+
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      error: 'Something went wrong on the server.',
+      details: undefined,
+    })
+
+    errorHandler(undefined, mockRequest as Request, mockResponse as Response, mockNext)
+
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      error: 'Something went wrong on the server.',
+      details: undefined,
+    })
+  })
+
+  it('should handle errors with custom properties', () => {
+    const originalEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = 'development'
+
+    const customError = {
+      message: 'Custom error message',
+      statusCode: 404,
+      customProperty: 'custom value'
+    }
+
+    errorHandler(customError, mockRequest as Request, mockResponse as Response, mockNext)
+
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      error: 'Something went wrong on the server.',
+      details: 'Custom error message',
+    })
+
+    process.env.NODE_ENV = originalEnv
+  })
 })

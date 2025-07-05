@@ -60,6 +60,16 @@ describe('Movie Services', () => {
         fetchPopularMovies({ page: 1, language: 'en-US' })
       ).rejects.toThrow('Network error')
     })
+
+    it('should handle API response errors', async () => {
+      mockedFetch.mockResolvedValueOnce({
+        json: jest.fn().mockRejectedValue(new Error('JSON parse error')),
+      } as any)
+
+      await expect(
+        fetchPopularMovies({ page: 1, language: 'en-US' })
+      ).rejects.toThrow('JSON parse error')
+    })
   })
 
   describe('searchMoviesByTitle', () => {
@@ -103,10 +113,32 @@ describe('Movie Services', () => {
       )
     })
 
+    it('should handle empty query string', async () => {
+      const mockResponse = { page: 1, results: [] }
+
+      mockedFetch.mockResolvedValueOnce({
+        json: jest.fn().mockResolvedValue(mockResponse),
+      } as any)
+
+      await searchMoviesByTitle('', 1)
+
+      expect(mockedFetch).toHaveBeenCalledWith(
+        'https://api.themoviedb.org/3/search/movie?api_key=test-api-key&language=en-US&query=&page=1'
+      )
+    })
+
     it('should throw error when fetch fails', async () => {
       mockedFetch.mockRejectedValueOnce(new Error('Search error'))
 
       await expect(searchMoviesByTitle('test', 1)).rejects.toThrow('Search error')
+    })
+
+    it('should handle API response errors', async () => {
+      mockedFetch.mockResolvedValueOnce({
+        json: jest.fn().mockRejectedValue(new Error('JSON parse error')),
+      } as any)
+
+      await expect(searchMoviesByTitle('test', 1)).rejects.toThrow('JSON parse error')
     })
   })
 })
