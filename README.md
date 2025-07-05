@@ -3,7 +3,7 @@
 A full-stack movies library application built with React, TypeScript, Node.js, and Express. The application allows users to browse popular movies and search for specific titles using The Movie Database (TMDB) API.
 
 UI (Frontend): https://frubes05.github.io/movie-library-app/
-Server (Backed): https://movie-library-app-08vs.onrender.com/
+Server (Backed): https://movie-library-app-08vs.onrender.com/ (Can be stale as I am using Free-Tier version)
 
 ## Features
 
@@ -13,6 +13,7 @@ Server (Backed): https://movie-library-app-08vs.onrender.com/
 - **Caching**: Server-side caching for improved performance
 - **Modern UI**: Clean, Material-UI based interface with hover effects and animations
 - **Rating System**: Visual rating badges with color-coded scores
+- **SEO System**: Implemented custom SEO system as react-helmet-async is not yet supported for react v19.0.0
 
 ## Tech Stack
 
