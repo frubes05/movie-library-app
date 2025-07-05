@@ -5,7 +5,7 @@ const SearchFormSkeleton = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <form>
+    <form data-testid="skeleton">
       <Stack
         direction={isMobile ? "column" : "row"}
         spacing={2}

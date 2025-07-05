@@ -25,6 +25,7 @@ const SearchForm = ({
       onSubmit={handleSubmit((data: { query: string }) =>
         onSubmitSearch(data.query.trim())
       )}
+      data-testid="search"
     >
       <Stack
         direction="row"
