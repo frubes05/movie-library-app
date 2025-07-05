@@ -4,7 +4,10 @@ import type { IPopularMoviesResponse } from "../../types";
 export const moviesApi = createApi({
   reducerPath: "moviesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:9000/api/movies",
+    baseUrl:
+      process.env.NODE_ENV === "production"
+        ? import.meta.env.VITE_PROD_ENV_URL
+        : import.meta.env.VITE_LOCAL_ENV_URL,
   }),
   endpoints: (builder) => ({
     getPopularMovies: builder.query<
