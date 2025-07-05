@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { GlobalContext } from "../context";
 import { useSearchParams } from "react-router-dom";
 import { useMobileBreakpoint } from "../../../hooks/mobile-breakpoint";
+import { useUrlValidation } from "../../../hooks/url-validation";
 
 export const GlobalContextProvider = ({
   children,
@@ -10,16 +11,26 @@ export const GlobalContextProvider = ({
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [popularPage, setPopularPage] = useState(
-    () => Number(searchParams.get("page")) || 1
+    () => {
+      const page = Number(searchParams.get("page")) || 1;
+      // Ensure page is within valid range
+      return Math.max(1, Math.min(page, 500));
+    }
   );
   const [searchPage, setSearchPage] = useState(
-    () => Number(searchParams.get("page")) || 1
+    () => {
+      const page = Number(searchParams.get("page")) || 1;
+      return Math.max(1, page);
+    }
   );
   const [searchQuery, setSearchQuery] = useState(
-    () => searchParams.get("query") ?? ""
+    () => searchParams.get("query")?.trim() ?? ""
   );
   const [, setInput] = useState("");
   const isMobile = useMobileBreakpoint();
+
+  // Validate URL parameters and handle redirects
+  useUrlValidation();
 
   const onSearchParamsChange = useCallback(
     (updated: Partial<Record<string, string | number | undefined>>) => {
@@ -42,14 +53,19 @@ export const GlobalContextProvider = ({
 
   const onPageChange = useCallback(
     (page: number) => {
+      // Validate page number
+      const validPage = Math.max(1, page);
+      
       if (searchQuery) {
-        setSearchPage(page);
+        setSearchPage(validPage);
         setPopularPage(1);
       } else {
-        setPopularPage(page);
+        // For popular movies, limit to 500 pages
+        const limitedPage = Math.min(validPage, 500);
+        setPopularPage(limitedPage);
         setSearchPage(1);
       }
-      onSearchParamsChange({ page });
+      onSearchParamsChange({ page: searchQuery ? validPage : Math.min(validPage, 500) });
     },
     [searchQuery, onSearchParamsChange]
   );
@@ -64,7 +80,10 @@ export const GlobalContextProvider = ({
 
       setSearchQuery(trimmedQuery);
       onPageChange(1);
-      onSearchParamsChange({ query: trimmedQuery ?? undefined, page: 1 });
+      onSearchParamsChange({ 
+        query: trimmedQuery || undefined, 
+        page: 1 
+      });
     },
     [onSearchParamsChange, setSearchQuery, onPageChange]
   );

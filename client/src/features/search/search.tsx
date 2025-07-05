@@ -43,6 +43,26 @@ const SearchForm = ({
       return;
     }
 
+    if (trimmedQuery.length > 100) {
+      showNotification(
+        "Search term is too long. Please use a shorter search term.",
+        "warning",
+        4000
+      );
+      return;
+    }
+
+    // Check for potentially problematic characters
+    const invalidChars = /[<>{}[\]\\]/;
+    if (invalidChars.test(trimmedQuery)) {
+      showNotification(
+        "Search term contains invalid characters. Please use only letters, numbers, and basic punctuation.",
+        "warning",
+        5000
+      );
+      return;
+    }
+
     onSubmitSearch(trimmedQuery);
     showNotification(
       `Searching for "${trimmedQuery}"...`,
@@ -109,8 +129,13 @@ const SearchForm = ({
                 helperText={
                   field.value.length > 0 && field.value.trim().length < 2
                     ? "Search term must be at least 2 characters"
+                    : field.value.length > 100
+                    ? "Search term is too long"
                     : ""
                 }
+                inputProps={{
+                  maxLength: 150, // Hard limit to prevent abuse
+                }}
               />
               <Button
                 type="button"

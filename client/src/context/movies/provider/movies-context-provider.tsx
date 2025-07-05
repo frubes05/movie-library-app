@@ -25,10 +25,9 @@ export const MoviesContextProvider = ({
     isLoading: isPopularDataLoading,
     error: popularError 
   } = useGetPopularMoviesQuery(
-    { page }, 
+    { page: Math.max(1, Math.min(page, 500)) }, // Ensure page is within valid range
     { 
       skip: isSearching,
-      // Refetch on mount if data is older than 5 minutes
       refetchOnMountOrArgChange: 300
     }
   );
@@ -38,10 +37,9 @@ export const MoviesContextProvider = ({
     isLoading: isSearchDataLoading,
     error: searchError 
   } = useSearchMoviesQuery(
-    { query: searchQuery, page }, 
+    { query: searchQuery, page: Math.max(1, page) }, // Ensure page is at least 1
     { 
       skip: !isSearching || !searchQuery.trim(),
-      // Refetch on mount if data is older than 2 minutes
       refetchOnMountOrArgChange: 120
     }
   );

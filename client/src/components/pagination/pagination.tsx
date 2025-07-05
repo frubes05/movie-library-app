@@ -1,4 +1,6 @@
 import { Pagination, PaginationItem, Stack } from "@mui/material";
+import { useNotification } from "../../context/notification";
+import { useEffect } from "react";
 
 interface IPaginationComponent {
   count?: number;
@@ -15,6 +17,45 @@ const PaginationComponent = ({
   color,
   isMobile,
 }: IPaginationComponent) => {
+  const { showNotification } = useNotification();
+
+  // Validate page against count
+  useEffect(() => {
+    if (count && page > count) {
+      showNotification(
+        `Page ${page} doesn't exist. Showing page ${count} instead.`,
+        "warning",
+        4000
+      );
+      onChange(null, count);
+    }
+  }, [page, count, onChange, showNotification]);
+
+  const handlePageChange = (_: unknown, value: number) => {
+    // Validate the new page value
+    if (value < 1) {
+      showNotification(
+        "Invalid page number. Redirecting to first page.",
+        "warning",
+        3000
+      );
+      onChange(_, 1);
+      return;
+    }
+
+    if (count && value > count) {
+      showNotification(
+        `Page ${value} doesn't exist. Showing last available page.`,
+        "warning",
+        4000
+      );
+      onChange(_, count);
+      return;
+    }
+
+    onChange(_, value);
+  };
+
   return (
     <Stack
       direction="row"
@@ -31,8 +72,8 @@ const PaginationComponent = ({
     >
       <Pagination
         count={count}
-        page={page}
-        onChange={onChange}
+        page={Math.min(page, count || 1)} // Ensure page doesn't exceed count
+        onChange={handlePageChange}
         color={color}
         variant="outlined"
         shape="rounded"
