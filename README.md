@@ -40,8 +40,8 @@ Server (Backed): https://movie-library-app-08vs.onrender.com/
 
 ## Project Structure
 
-![Code Structure 1](https://frubes05.github.io/movie-library-app/assets/code-structure-01.png)
-![Code Structure 2](https://frubes05.github.io/movie-library-app/assets/code-structure-02.png)
+![Code Structure 1](https://frubes05.github.io/movie-library-app/client/assets/code-structure-01.png)
+![Code Structure 2](https://frubes05.github.io/movie-library-app/client/assets/code-structure-02.png)
 
 ## Getting Started
 
