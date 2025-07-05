@@ -64,13 +64,31 @@ const SearchForm = ({
                   }
                 }}
                 sx={{
-                  border: "2px solid black",
                   borderRadius: 2,
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "8px",
+                    "& fieldset": {
+                      border: "2px solid black",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "black",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "black",
+                      borderWidth: "2px",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "black",
+                    fontWeight: 500,
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "black",
+                  },
                 }}
               />
               <Button
                 type="button"
-                variant="contained"
                 sx={{
                   position: "absolute",
                   right: "-4px",
@@ -80,6 +98,9 @@ const SearchForm = ({
                   bgcolor: "black",
                   color: "white",
                   borderRadius: 2,
+                  "&.Mui-disabled": {
+                    color: "white",
+                  },
                 }}
                 disabled={field.value.trim() === ""}
                 onClick={() => {

@@ -4,15 +4,13 @@ import RatingBadge from "../rating-badge/rating-badge";
 import { formatDateWithSuffix } from "../../../utils/date-util";
 import CardComponent from "../../../components/card/card";
 
-const BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w342";
-
 interface IMoviesCard extends IPopularMoviesResponseResult {
   isMobile: boolean;
 }
 
 const MoviesCard = (movie: IMoviesCard) => {
   const imageUrl = movie.poster_path
-    ? `${BASE_IMAGE_URL}${movie.poster_path}`
+    ? `${import.meta.env.VITE_TMDB_IMAGE_BASE_URL}${movie.poster_path}`
     : "/fallback.jpg";
 
   return (
