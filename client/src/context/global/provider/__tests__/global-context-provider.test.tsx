@@ -4,7 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import { GlobalContextProvider } from "../../provider/global-context-provider";
 import { useGlobalContext } from "../../../../hooks/global";
 
-// Mock the mobile breakpoint hook
 vi.mock("../../../hooks/mobile-breakpoint", () => ({
   useMobileBreakpoint: () => false,
 }));
@@ -45,7 +44,7 @@ describe("GlobalContextProvider", () => {
     });
 
     expect(result.current.searchQuery).toBe("test movie");
-    expect(result.current.page).toBe(1); // Should reset to page 1
+    expect(result.current.page).toBe(1);
   });
 
   it("should trim whitespace in search query", () => {
