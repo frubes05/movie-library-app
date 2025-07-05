@@ -1,4 +1,10 @@
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { GlobalContext } from "../context";
 import { useSearchParams } from "react-router-dom";
 import { useMobileBreakpoint } from "../../../hooks/mobile-breakpoint";
@@ -20,6 +26,19 @@ export const GlobalContextProvider = ({
   );
   const [, setInput] = useState("");
   const isMobile = useMobileBreakpoint();
+
+  useEffect(() => {
+    // to sync internal state with external search params
+    const query = searchParams.get("query") ?? "";
+    const page = Number(searchParams.get("page")) || 1;
+
+    setSearchQuery(query);
+    if (query) {
+      setSearchPage(page);
+    } else {
+      setPopularPage(page);
+    }
+  }, [searchParams]);
 
   const onSearchParamsChange = useCallback(
     (updated: Partial<Record<string, string | number | undefined>>) => {

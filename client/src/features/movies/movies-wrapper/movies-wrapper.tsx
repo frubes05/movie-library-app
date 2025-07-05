@@ -3,15 +3,16 @@ import MoviesList from "../movies-list/movies-list";
 import { Box } from "@mui/material";
 import PaginationComponent from "../../../components/pagination/pagination";
 import PaginationSkeletonComponent from "../../../components/pagination/pagination-skeleton/pagination-skeleton";
+import { useValidPage } from "../../../hooks/valid-page";
 
-const MoviesWrapper = ({
-  onPageChange,
-  isMobile,
-}: {
+interface IMoviesWrapper {
   onPageChange?: (elem: number) => void;
   isMobile: boolean;
-}) => {
+}
+
+const MoviesWrapper = ({ onPageChange, isMobile }: IMoviesWrapper) => {
   const { movies, count, currentPage, isLoading } = useMoviesContext();
+  useValidPage(count);
 
   return (
     <section>
