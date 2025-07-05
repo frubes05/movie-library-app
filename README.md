@@ -187,6 +187,7 @@ npm run test:coverage
 ## Key Improvement Areas (The ones I did not do, but would be added next)
 
 - **Setup Aliases in tsconfig.json**: For both frontend and backend (also make everything barrel exported)
+- **Setup Design System and Design Tokens**: Would be nice to have reusable values for colors, spacings, fonts, animations and transitions
 - **Global Error Handling**: On backend there is an error handler, but on frontend there needs to be global error handling context + toast message(snackbar) system
 - **Input Validation and sanitization**: Using Zod ili Yup resolvers with react-hook-form (schema-based validation) as well as sanitizing input to prevent SQL injection attacks
 - **Rate limiter in backend**: Prevent abuse and accidental DDoS by limiting repeated API hits from the same IP.
