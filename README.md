@@ -188,9 +188,10 @@ npm run test:coverage
 
 - **Setup Aliases in tsconfig.json**: For both frontend and backend (also make everything barrel exported)
 - **Global Error Handling**: On backend there is an error handler, but on frontend there needs to be global error handling context + toast message(snackbar) system
-- **Input Validation**: Using Zod ili Yup resolvers with react-hook-form (schema-based validation)
+- **Input Validation and sanitization**: Using Zod ili Yup resolvers with react-hook-form (schema-based validation) as well as sanitizing input to prevent SQL injection attacks
 - **Rate limiter in backend**: Prevent abuse and accidental DDoS by limiting repeated API hits from the same IP.
 - **Movie Details**: Expand functionality with information about movie: cast, trailers, reviews, and recommendations (modal or custom page).
 - **More Reusable components**: Abstract shared UI elements like buttons, modals, loaders, and toasts for consistency
 - **Add Docker image**: For both directories use Docker compose
 - **Routing (if multiple pages)**: Definitely nice to have, but for simple app like this it's not needed
+- **Normalization of data**: In this app was not needed, but usually if backend response is too large or too broad, some normalization of response would be optimal
