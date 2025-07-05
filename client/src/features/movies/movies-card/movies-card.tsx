@@ -9,9 +9,13 @@ interface IMoviesCard extends IPopularMoviesResponseResult {
 }
 
 const MoviesCard = (movie: IMoviesCard) => {
+  const fallbackImageUrl =
+    process.env.NODE_ENV === "production"
+      ? "/movie-library-app/fallback.jpg"
+      : "/fallback.jpg";
   const imageUrl = movie.poster_path
     ? `${import.meta.env.VITE_TMDB_IMAGE_BASE_URL}${movie.poster_path}`
-    : "/fallback.jpg";
+    : fallbackImageUrl;
 
   return (
     <CardComponent
